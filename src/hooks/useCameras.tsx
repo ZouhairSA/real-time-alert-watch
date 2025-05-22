@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { getCameras, Camera } from '@/api/mockApi';
+import { Camera } from '@/api/mockApi';
+import apiClient from '@/api/apiClient';
+import { CONFIG } from '@/config';
 
 export function useCameras() {
   const { user } = useAuth();
@@ -18,9 +20,8 @@ export function useCameras() {
 
       try {
         setIsLoading(true);
-        const isAdmin = user.role === 'admin';
-        const data = await getCameras(user.id, isAdmin);
-        setCameras(data);
+        const response = await apiClient.get(CONFIG.API_ENDPOINTS.CAMERAS.BASE);
+        setCameras(response.data);
         setError(null);
       } catch (err) {
         setError('Failed to fetch cameras');

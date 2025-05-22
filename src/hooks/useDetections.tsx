@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { getDetections, Detection } from '@/api/mockApi';
+import { Detection } from '@/api/mockApi';
+import apiClient from '@/api/apiClient';
+import { CONFIG } from '@/config';
 
 export function useDetections() {
   const { user } = useAuth();
@@ -18,9 +20,8 @@ export function useDetections() {
 
       try {
         setIsLoading(true);
-        const isAdmin = user.role === 'admin';
-        const data = await getDetections(user.id, isAdmin);
-        setDetections(data);
+        const response = await apiClient.get(CONFIG.API_ENDPOINTS.DETECTIONS.BASE);
+        setDetections(response.data);
         setError(null);
       } catch (err) {
         setError('Failed to fetch detections');

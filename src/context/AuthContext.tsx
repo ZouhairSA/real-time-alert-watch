@@ -1,5 +1,8 @@
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { toast } from "@/components/ui/sonner";
+import apiClient from '@/api/apiClient';
+import { CONFIG } from '@/config';
 
 // Types
 type User = {
@@ -16,13 +19,6 @@ type AuthContextType = {
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 };
-
-// Mock user data for demonstration
-const MOCK_USERS = [
-  { id: 1, username: 'admin', password: 'admin123', email: 'admin@example.com', role: 'admin' as const },
-  { id: 2, username: 'user1', password: 'user123', email: 'user1@example.com', role: 'user' as const },
-  { id: 3, username: 'user2', password: 'user234', email: 'user2@example.com', role: 'user' as const }
-];
 
 // Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,35 +38,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(false);
   }, []);
 
-  // Mock login function
+  // Login function using the real API
   const login = async (username: string, password: string): Promise<void> => {
     setIsLoading(true);
     
     try {
-      // This simulates an API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await apiClient.post(CONFIG.API_ENDPOINTS.AUTH.LOGIN, {
+        username,
+        password
+      });
       
-      const user = MOCK_USERS.find(
-        u => u.username === username && u.password === password
-      );
+      const { token, user } = response.data;
       
-      if (!user) {
-        throw new Error('Invalid credentials');
-      }
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
       
-      // Create a user object without the password
-      const { password: _, ...safeUser } = user;
-      
-      // Create a mock JWT token (in a real app, this would come from the server)
-      const mockToken = `mock-jwt-token-${Date.now()}`;
-      
-      localStorage.setItem('user', JSON.stringify(safeUser));
-      localStorage.setItem('token', mockToken);
-      
-      setUser(safeUser);
+      setUser(user);
       toast.success("Login successful!");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Login failed");
+      // Error handling is done in the apiClient interceptor
       throw error;
     } finally {
       setIsLoading(false);

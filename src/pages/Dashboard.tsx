@@ -51,7 +51,7 @@ const Dashboard = () => {
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-2">Welcome, {user?.username}</h1>
           <p className="text-muted-foreground">
-            Surveillance System Dashboard | {user?.role === 'admin' ? 'Administrator' : 'User'}
+            AI SecurityV2 | {user?.role === 'admin' ? 'Administrator' : 'User'}
           </p>
         </div>
         

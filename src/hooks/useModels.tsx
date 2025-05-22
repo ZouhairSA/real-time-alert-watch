@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { getModels, AiModel } from '@/api/mockApi';
+import { AiModel } from '@/api/mockApi';
+import apiClient from '@/api/apiClient';
+import { CONFIG } from '@/config';
 
 export function useModels() {
   const { user } = useAuth();
@@ -18,8 +20,8 @@ export function useModels() {
 
       try {
         setIsLoading(true);
-        const data = await getModels();
-        setModels(data);
+        const response = await apiClient.get(CONFIG.API_ENDPOINTS.MODELS.BASE);
+        setModels(response.data);
         setError(null);
       } catch (err) {
         setError('Failed to fetch AI models');

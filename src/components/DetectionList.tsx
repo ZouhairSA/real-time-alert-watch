@@ -3,16 +3,7 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-
-interface Detection {
-  id: number;
-  cameraId: number;
-  cameraName: string;
-  type: 'crowd' | 'weapon' | 'fire' | 'object';
-  timestamp: string;
-  confidence: number;
-  metadata?: Record<string, any>;
-}
+import { Detection } from '@/api/mockApi';
 
 interface DetectionListProps {
   detections: Detection[];
@@ -73,7 +64,7 @@ const DetectionList: React.FC<DetectionListProps> = ({ detections, isLoading = f
           {detections.map((detection) => (
             <TableRow key={detection.id}>
               <TableCell>{getDetectionBadge(detection.type)}</TableCell>
-              <TableCell>{detection.cameraName}</TableCell>
+              <TableCell>{detection.camera_name}</TableCell>
               <TableCell>{formatTimestamp(detection.timestamp)}</TableCell>
               <TableCell>{Math.round(detection.confidence * 100)}%</TableCell>
             </TableRow>
