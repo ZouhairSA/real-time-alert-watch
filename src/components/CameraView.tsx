@@ -43,7 +43,7 @@ const CameraView: React.FC<CameraViewProps> = ({
       case 'fire':
         return <Badge variant="destructive" className="alert-badge">Fire Detected</Badge>;
       case 'crowd':
-        return <Badge variant="warning" className="bg-warning text-warning-foreground">Crowd Detected</Badge>;
+        return <Badge variant="secondary" className="bg-warning text-warning-foreground">Crowd Detected</Badge>;
       case 'object':
         return <Badge variant="default" className="bg-primary text-primary-foreground">Object Detected</Badge>;
       default:
