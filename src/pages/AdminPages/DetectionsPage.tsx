@@ -5,72 +5,97 @@ import DetectionList from '@/components/DetectionList';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MonitorOff } from 'lucide-react';
+import { Detection } from '@/api/mockApi'; // Import the Detection type
 
-// Mock data for detections
-const allMockDetections = [
+// Mock data for detections - structure updated to match Detection type
+const allMockDetections: Detection[] = [
   { 
     id: 1, 
-    cameraId: 4, 
-    cameraName: 'Lobby', 
-    type: 'weapon' as const, 
+    camera_id: 4, 
+    camera_name: 'Lobby', 
+    user_id: 1,
+    model_id: 1,
+    type: 'weapon', 
     timestamp: new Date(Date.now() - 300000).toISOString(),
-    confidence: 0.91 
+    confidence: 0.91,
+    metadata: { weapon_type: 'handgun', bounding_box: [120, 80, 45, 30] }
   },
   { 
     id: 2, 
-    cameraId: 5, 
-    cameraName: 'Back Entrance', 
-    type: 'fire' as const, 
+    camera_id: 5, 
+    camera_name: 'Back Entrance',
+    user_id: 1,
+    model_id: 3, 
+    type: 'fire', 
     timestamp: new Date(Date.now() - 600000).toISOString(),
-    confidence: 0.88 
+    confidence: 0.88,
+    metadata: { flame_detected: true, smoke_detected: true }
   },
   { 
     id: 3, 
-    cameraId: 1, 
-    cameraName: 'Front Entrance', 
-    type: 'crowd' as const, 
+    camera_id: 1, 
+    camera_name: 'Front Entrance',
+    user_id: 2,
+    model_id: 1, 
+    type: 'crowd', 
     timestamp: new Date().toISOString(),
-    confidence: 0.82 
+    confidence: 0.82,
+    metadata: { density: 0.76, movement: 'high' }
   },
   { 
     id: 4, 
-    cameraId: 2, 
-    cameraName: 'Parking Lot', 
-    type: 'object' as const, 
+    camera_id: 2, 
+    camera_name: 'Parking Lot',
+    user_id: 3,
+    model_id: 4, 
+    type: 'object', 
     timestamp: new Date(Date.now() - 120000).toISOString(),
-    confidence: 0.75 
+    confidence: 0.75,
+    metadata: { object_type: 'package', bounding_box: [240, 160, 60, 50] }
   },
   { 
     id: 5, 
-    cameraId: 1, 
-    cameraName: 'Front Entrance', 
-    type: 'object' as const, 
+    camera_id: 1, 
+    camera_name: 'Front Entrance',
+    user_id: 2,
+    model_id: 4, 
+    type: 'object', 
     timestamp: new Date(Date.now() - 1800000).toISOString(),
-    confidence: 0.68 
+    confidence: 0.68,
+    metadata: { object_type: 'bag', bounding_box: [320, 210, 40, 35] }
   },
   { 
     id: 6, 
-    cameraId: 4, 
-    cameraName: 'Lobby', 
-    type: 'crowd' as const, 
+    camera_id: 4, 
+    camera_name: 'Lobby',
+    user_id: 2,
+    model_id: 1, 
+    type: 'crowd', 
     timestamp: new Date(Date.now() - 7200000).toISOString(),
-    confidence: 0.79 
+    confidence: 0.79,
+    metadata: { density: 0.65, movement: 'medium' }
   },
   { 
     id: 7, 
-    cameraId: 2, 
-    cameraName: 'Parking Lot', 
-    type: 'weapon' as const, 
+    camera_id: 2, 
+    camera_name: 'Parking Lot',
+    user_id: 1,
+    model_id: 2, 
+    type: 'weapon', 
     timestamp: new Date(Date.now() - 86400000).toISOString(),
-    confidence: 0.94 
+    confidence: 0.94,
+    metadata: { weapon_type: 'rifle', bounding_box: [180, 120, 90, 40] }
   },
   { 
     id: 8, 
-    cameraId: 5, 
-    cameraName: 'Back Entrance', 
-    type: 'object' as const, 
+    camera_id: 5, 
+    camera_name: 'Back Entrance',
+    user_id: 3,
+    model_id: 4, 
+    type: 'object', 
     timestamp: new Date(Date.now() - 172800000).toISOString(),
-    confidence: 0.71 
+    confidence: 0.71,
+    metadata: { object_type: 'laptop', bounding_box: [200, 150, 55, 40] }
   },
 ];
 
@@ -79,12 +104,12 @@ const DetectionsPage = () => {
   const [filterCamera, setFilterCamera] = useState<string>("all");
   
   // Get unique camera names
-  const cameras = Array.from(new Set(allMockDetections.map(d => d.cameraName)));
+  const cameras = Array.from(new Set(allMockDetections.map(d => d.camera_name)));
   
   // Filter detections
   const filteredDetections = allMockDetections.filter(detection => {
     const typeMatch = filterType === "all" || detection.type === filterType;
-    const cameraMatch = filterCamera === "all" || detection.cameraName === filterCamera;
+    const cameraMatch = filterCamera === "all" || detection.camera_name === filterCamera;
     return typeMatch && cameraMatch;
   });
 
