@@ -1,0 +1,14 @@
+[build]
+command = "pip install -r requirements.txt"
+start = "gunicorn -w 4 -b :$PORT backend.app:app"
+
+[env]
+DB_HOST = ""
+DB_NAME = "ai_security_v2"
+DB_USER = ""
+DB_PASSWORD = ""
+
+[database]
+name = "ai_security_db"
+type = "postgresql"
+size = "free"

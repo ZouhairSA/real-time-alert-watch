@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: real-time-alert-watch
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn -w 4 -b :$PORT backend.app:app"
+    envVars:
+      - key: DB_HOST
+        fromService: ai-security-db
+      - key: DB_NAME
+        value: ai_security_v2
+      - key: DB_USER
+        fromService: ai-security-db
+      - key: DB_PASSWORD
+        fromService: ai-security-db
+
+  - type: database
+    name: ai-security-db
+    database: postgresql
+    envVars:
+      - key: POSTGRESQL_DATABASE
+        value: ai_security_v2
