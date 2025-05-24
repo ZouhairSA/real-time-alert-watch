@@ -1,5 +1,5 @@
 [build]
-command = "pip install -r requirements.txt"
+command = "apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0 && pip install -r requirements.txt"
 start = "gunicorn -w 4 -b :$PORT backend.app:app"
 
 [env]
@@ -12,3 +12,6 @@ DB_PASSWORD = ""
 name = "ai_security_db"
 type = "postgresql"
 size = "free"
+
+[env]
+OPENCV_VIDEOIO_PRIORITY_MSMF = "1"
