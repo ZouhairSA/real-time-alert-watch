@@ -1,4 +1,3 @@
-
 # AI Security V2 - Backend API
 
 This folder contains the backend API for the AI Security V2 application. The API is built using Flask and provides endpoints for authentication, users, cameras, detections, and AI models.
@@ -24,19 +23,64 @@ backend/
 
 ## Setup Instructions
 
-1. Install dependencies:
-   ```
-   pip install -r requirements.txt
+### 1. Environment Setup
+
+1. Create and activate a virtual environment:
+   ```bash
+   # Windows
+   python -m venv venv
+   .\venv\Scripts\activate
+
+   # Linux/Mac
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
-2. Configure database:
-   - Setup a MySQL database (using XAMPP or other MySQL server)
-   - Create a database named "ai_security_v2"
-   - Update the database configuration in `config.py` if needed
-
-3. Run the application:
+2. Upgrade pip:
+   ```bash
+   python -m pip install --upgrade pip
    ```
+
+3. Install dependencies:
+   ```bash
+   pip install flask==2.2.3 flask-cors==3.0.10 flask-jwt-extended==4.4.4 flask-socketio==5.3.3 mysql-connector-python==8.0.32 python-dotenv==1.0.0 werkzeug==2.2.3 gunicorn==20.1.0 python-engineio==4.8.0 python-socketio==5.10.0
+   ```
+
+### 2. Database Configuration
+
+1. Create a MySQL database:
+   ```sql
+   CREATE DATABASE ai_security_v2;
+   ```
+
+2. Create a `.env` file in the backend directory with the following content:
+   ```
+   # Database Configuration
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=
+   DB_NAME=ai_security_v2
+   DB_PORT=3306
+
+   # JWT Configuration
+   JWT_SECRET_KEY=your-secret-key-here
+
+   # Server Configuration
+   PORT=5000
+   FLASK_DEBUG=True
+   ```
+
+### 3. Running the Application
+
+1. Start the backend server:
+   ```bash
    python app.py
+   ```
+   The server will start on http://localhost:5000
+
+2. For production deployment:
+   ```bash
+   python wsgi.py
    ```
 
 ## Production Deployment
